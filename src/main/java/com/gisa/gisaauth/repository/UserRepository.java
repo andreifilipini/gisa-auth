@@ -1,4 +1,4 @@
-package com.gisa.gisaauth.model.repository;
+package com.gisa.gisaauth.repository;
 
 import com.gisa.gisaauth.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;

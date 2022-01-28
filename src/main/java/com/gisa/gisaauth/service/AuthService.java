@@ -3,7 +3,7 @@ package com.gisa.gisaauth.service;
 import com.gisa.gisaauth.dto.LoginRequestDTO;
 import com.gisa.gisaauth.dto.LoginResponseDTO;
 import com.gisa.gisaauth.model.User;
-import com.gisa.gisaauth.model.repository.UserRepository;
+import com.gisa.gisaauth.repository.UserRepository;
 import com.gisa.gisacore.util.CipherUtil;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
