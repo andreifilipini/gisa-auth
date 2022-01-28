@@ -2,6 +2,7 @@ package com.gisa.gisaauth.service;
 
 import com.gisa.gisaauth.dto.AddConsumerDataDTO;
 import com.gisa.gisacore.exception.InfraException;
+import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.stereotype.Component;
@@ -23,6 +24,9 @@ public class KongService {
     @Value("${kong.url}")
     private String url;
 
+    @Value("${jwt.secret}")
+    private String secret;
+
     private RestTemplate restTemplate;
 
     @PostConstruct
@@ -35,24 +39,30 @@ public class KongService {
         ResponseEntity<AddConsumerDataDTO> response = authenticate(login);
 
         if (HttpStatus.CREATED.equals(response.getStatusCode())) {
-            System.out.println(response.getBody().getKey());
             return response.getBody().getKey();
         }
         throw new InfraException("Problema ao registrar Consumer no API Gateway."+response.getStatusCodeValue());
     }
 
     private ResponseEntity<AddConsumerDataDTO> authenticate(String login) {
-        return restTemplate.postForEntity(String.format(CONSUMERS_JWT_URL, this.url, login), null, AddConsumerDataDTO.class);
+        HttpHeaders headers = getHttpHeaders();
+
+        MultiValueMap<String, String> map= new LinkedMultiValueMap<>();
+        map.add("algorithm", SignatureAlgorithm.HS512.name());
+        map.add("secret", this.secret);
+
+        HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(map, headers);
+
+        return restTemplate.postForEntity(String.format(CONSUMERS_JWT_URL, this.url, login), request, AddConsumerDataDTO.class);
     }
 
     private void register(String login) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+        HttpHeaders headers = getHttpHeaders();
 
-        MultiValueMap<String, String> map= new LinkedMultiValueMap<String, String>();
+        MultiValueMap<String, String> map= new LinkedMultiValueMap<>();
         map.add("username", login);
 
-        HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<MultiValueMap<String, String>>(map, headers);
+        HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(map, headers);
 
         try {
             restTemplate.postForEntity(String.format(CONSUMERS_URL, this.url, login), request, null);
@@ -61,6 +71,12 @@ public class KongService {
                 throw e;
             }
         }
+    }
+
+    private HttpHeaders getHttpHeaders() {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+        return headers;
     }
 
 }
