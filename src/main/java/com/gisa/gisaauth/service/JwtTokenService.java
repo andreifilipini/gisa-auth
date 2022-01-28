@@ -36,7 +36,7 @@ public class JwtTokenService {
 		claims.put(CLAIM_ROLES, user.getRoles().stream()
 				.map(Role::getName)
 				.map(RoleEnum::name)
-				.collect(Collectors.joining(",")));
+				.collect(Collectors.toList()));
 		claims.put(CLAIM_ISS, iss);
 		return jwtTokenUtil.generate(claims, user.getLogin());
 	}
