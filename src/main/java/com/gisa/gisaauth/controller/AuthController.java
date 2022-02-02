@@ -8,10 +8,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.ws.rs.NotAuthorizedException;
-import javax.ws.rs.QueryParam;
 
 @RestController
 @RequestMapping("/auth")
@@ -21,7 +21,7 @@ public class AuthController {
 	private AuthService authService;
 
 	@PostMapping
-	public ResponseEntity<LoginResponseDTO> login(@QueryParam("login") String login, @QueryParam("password") String password) {
+	public ResponseEntity<LoginResponseDTO> login(@RequestParam("login") String login, @RequestParam("password") String password) {
 		try {
 			return ResponseEntity.ok(authService.authenticate(new LoginRequestDTO(login, password)));
 		} catch (NotAuthorizedException e) {
