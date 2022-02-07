@@ -28,7 +28,7 @@ public class AuthService {
 
 	public LoginResponseDTO authenticate(LoginRequestDTO loginRequestDTO) {
 
-		if(!repository.existsByLoginAndPassword(loginRequestDTO.getLogin(), CipherUtil.encrypt(loginRequestDTO.getPassword()))) {
+		if(!repository.existsByLoginAndPassword(loginRequestDTO.getLogin(), CipherUtil.encrypt64(loginRequestDTO.getPassword()))) {
 			throw new NotAuthorizedException("Login e/ou senha inválido.");
 		}
 

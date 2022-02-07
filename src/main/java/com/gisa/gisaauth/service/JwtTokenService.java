@@ -38,7 +38,7 @@ public class JwtTokenService {
 				.map(RoleEnum::name)
 				.collect(Collectors.toList()));
 		claims.put(CLAIM_ISS, iss);
-		return jwtTokenUtil.generate(claims, user.getLogin());
+		return jwtTokenUtil.generate(claims, user.getId().toString());
 	}
 
 }

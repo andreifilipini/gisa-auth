@@ -38,7 +38,7 @@ public class User {
 	}
 
 	public void updatePassword(String password) {
-		this.password = CipherUtil.encrypt(password);
+		this.password = CipherUtil.encrypt64(password);
 	}
 
 	public void addRole(Role role) {
