@@ -1,7 +1,7 @@
 package com.gisa.gisaauth.service;
 
 import com.gisa.gisaauth.model.Role;
-import com.gisa.gisaauth.model.RoleEnum;
+import com.gisa.gisacore.model.RoleEnum;
 import com.gisa.gisaauth.model.User;
 import com.gisa.gisacore.util.JwtTokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,5 +1,6 @@
 package com.gisa.gisaauth.model;
 
+import com.gisa.gisacore.model.RoleEnum;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
